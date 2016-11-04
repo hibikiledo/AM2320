@@ -182,7 +182,7 @@ This indicates no error. Everything works fine.
 #### Code 1
 Sensor is not online. This happens when Arduino cannot connect to the sensor. Possible causes may be bad connections, wrong wirings, etc. You may want to use I2CScanner sketch to check if Arduino can find the sensor or not.
 #### Code 2
-CRC validation failed. This happends when data transmitted from the sensor received incorrectly. Possible causes may be bad connections, too long cable, etc.
+CRC validation failed. This happends when data transmitted from the sensor is received with errors. Possible causes may be bad connections, lengthy cable, etc.
 
 ## Usage Example
 ```cpp
