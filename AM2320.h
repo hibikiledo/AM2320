@@ -40,16 +40,11 @@ class AM2320 {
         void begin(int sda, int scl);
         #endif
 
-        // measuring
-        bool measureTemperature();
-        bool measureHumidity();
         bool measure();
 
-        // read measured data
         int getTemperature();
         int getHumidity();
 
-        // return error code
         int getErrorCode();
         
     private:

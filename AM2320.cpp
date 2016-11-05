@@ -33,56 +33,8 @@ void AM2320::begin(int sda, int scl) {
 }
 #endif
 
-bool AM2320::measureTemperature() {
-    _errorCode = 0;
-    if ( ! _read_registers(0x02, 2)) {
-        _errorCode = 1;
-        return false;
-    }
-
-    unsigned int receivedCrc = 0;       // allocate 16 bits for storing crc from sensor           
-    receivedCrc = ((receivedCrc | _buf[5]) << 8 | _buf[4]);   // pack high and low byte together
-
-    if (receivedCrc == crc16(_buf, 4)) {
-        int data = ((_buf[2] & 0x7F) << 8) | _buf[3];
-        if ((_buf[2] & 0x80) >> 8 == 1) {       // negative temperature
-            _temperature = (data / 10) * -1;    // devide data by 10 according to the datasheet
-        }
-        else {                                  // positive temperature
-            _temperature = data / 10;           // devide data by 10 according to the datasheet
-        }
-        return true;                            // return success code
-    }
-    else {
-        _errorCode = 2;
-        return false;                           // return crc failed code
-    }
-}
-
-
 int AM2320::getTemperature() {
     return _temperature;
-}
-
-bool AM2320::measureHumidity() {
-    _errorCode = 0;
-    if ( ! _read_registers(0x00, 2)) {
-        _errorCode = 1;
-        return false;
-    }
-
-    unsigned int receivedCrc = 0;       // allocate 16 bits for storing crc from sensor
-    receivedCrc = ((receivedCrc | _buf[5]) << 8 | _buf[4]);   // pack high and low byte together
-
-    if (receivedCrc == crc16(_buf, 4)) {
-        int data = (_buf[2] << 8) | _buf[3];    // combined high and low byte together
-        _humidity = data / 10;                  // device by 10 according to the datasheet
-        return true;                               // return success code
-    }
-    else {
-        _errorCode = 2;
-        return false;                               // return crc failed code
-    }
 }
 
 int AM2320::getHumidity() {
@@ -91,7 +43,34 @@ int AM2320::getHumidity() {
 
 bool AM2320::measure() {
     _errorCode = 0;
-    return measureTemperature() && measureHumidity();
+
+    if ( ! _read_registers(0x00, 4)) {
+        _errorCode = 1;
+        return false;
+    }
+
+    unsigned int receivedCrc = 0;       // allocate 16 bits for storing crc from sensor
+    receivedCrc = ((receivedCrc | _buf[7]) << 8 | _buf[6]);   // pack high and low byte together
+
+    if (receivedCrc == crc16(_buf, 6)) {
+        int humudity = ((_buf[2] << 8) | _buf[3]);
+        _humidity =  humudity / 10;
+
+        int temperature = ((_buf[4] & 0x7F) << 8) | _buf[5];
+        if ((_buf[2] & 0x80) >> 8 == 1) {       // negative temperature
+            _temperature = (temperature / 10) * -1;    // devide data by 10 according to the datasheet
+        }
+        else {                                  // positive temperature
+            _temperature = temperature / 10;           // devide data by 10 according to the datasheet
+        }
+
+        return true;
+    }
+    else {
+        _errorCode = 2;
+        return false;
+    }
+
 }
 
 int AM2320::getErrorCode() {
@@ -107,9 +86,9 @@ bool AM2320::_read_registers(int startAddress, int numByte) {
     Wire.write(numByte);        // number of bytes to read
 
     // send and check result if not success, return error code
-    if (Wire.endTransmission() != 0) {
+    if (Wire.endTransmission(true) != 0) {        
         return false;                           // return sensor not ready code
-    };
+    }
     delayMicroseconds(1500);                    // as specified in datasheet
     Wire.requestFrom(AM2320_ADDR, numByte + 4); // request bytes from sensor
                                                 // see function code description in datasheet    
