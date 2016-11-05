@@ -37,6 +37,7 @@ bool AM2320::measureTemperature() {
     _errorCode = 0;
     if ( ! _read_registers(0x02, 2)) {
         _errorCode = 1;
+        return false;
     }
 
     unsigned int receivedCrc = 0;       // allocate 16 bits for storing crc from sensor           
@@ -66,7 +67,8 @@ int AM2320::getTemperature() {
 bool AM2320::measureHumidity() {
     _errorCode = 0;
     if ( ! _read_registers(0x00, 2)) {
-        _errorCode = 1;   
+        _errorCode = 1;
+        return false;
     }
 
     unsigned int receivedCrc = 0;       // allocate 16 bits for storing crc from sensor
