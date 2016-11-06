@@ -90,36 +90,6 @@ void loop() {
 ---
 
 ```cpp
-bool measureTemperature();
-```
-#### Summary
-Tell the sensor to perform temperature acquisition.
-
-#### Parameters
-None
-
-#### Return Value
-- true - the operation is successful
-- false - an error occurs. use `getErrorCode()` to get an error code. [More info](#error-codes)
-
----
-
-```cpp
-bool measureHumidity();
-```
-#### Summary
-Tell the sensor to perform humidity acquisition.
-
-#### Parameters
-None
-
-#### Return Value
-- true - the operation is successful
-- false - an error occurs. use `getErrorCode()` to get an error code. [More info](#error-codes)
-
----
-
-```cpp
 bool measure();
 ```
 #### Summary
@@ -194,6 +164,15 @@ AM2320 sensor;
 
 void setup() {
   // enable serial communication
+// Include library into the sketch
+#include <AM2320.h>
+#include <Wire.h>
+
+// Create an instance of sensor
+AM2320 sensor;
+
+void setup() {
+  // enable serial communication
   Serial.begin(115200);
   // call sensor.begin() to initialize the library
   sensor.begin();
@@ -201,13 +180,11 @@ void setup() {
 
 void loop() {
 
-  // measure both temperature and humidity at once.
   // sensor.measure() returns boolean value
   // - true indicates measurement is completed and success
   // - false indicates that either sensor is not ready or crc validation failed
   //   use getErrorCode() to check for cause of error.
   if (sensor.measure()) {
-    Serial.println("Measuring both temperature and humidity at once ..");
     Serial.print("Temperature: ");
     Serial.println(sensor.getTemperature());
     Serial.print("Humidity: ");
@@ -221,44 +198,7 @@ void loop() {
     }    
   }
 
-  // measure only temperature
-  // sensor.measureTemerature() returns boolean value
-  // - true indicates measurement is completed and success
-  // - false indicates that either sensor is not ready or crc validation failed
-  //   use getErrorCode() to check for cause of error.
-  if (sensor.measureTemperature()) {
-      Serial.println("Measuring only temperature ..");
-      Serial.print("Temperature: ");
-      Serial.println(sensor.getTemperature());
-  }
-  else {  // error has occured
-    int errorCode = sensor.getErrorCode();
-    switch (errorCode) {
-      case 1: Serial.println("ERR: Sensor is not online"); break;
-      case 2: Serial.println("ERR: CRC validation failed."); break;
-    }    
-  }
-
-  // measure only humidity
-  // sensor.measureHumidity() returns boolean value
-  // - true indicates measurement is completed and success
-  // - false indicates that either sensor is not ready or crc validation failed
-  //   use getErrorCode() to check for cause of error.
-  if (sensor.measureHumidity()) {
-      Serial.println("Measuring only humidity ..");
-      Serial.print("Humidity: ");
-      Serial.println(sensor.getHumidity());
-  }
-  else {  // error has occured
-    int errorCode = sensor.getErrorCode();
-    switch (errorCode) {
-      case 1: Serial.println("ERR: Sensor is not online"); break;
-      case 2: Serial.println("ERR: CRC validation failed."); break;
-    }    
-  }
-  
-  delay(1000);
-
+  delay(500);
 }
 ```
 

@@ -17,7 +17,6 @@
 
 // Include library into the sketch
 #include <AM2320.h>
-#include <Wire.h>
 
 // Create an instance of sensor
 AM2320 sensor;
@@ -44,7 +43,7 @@ void loop() {
   else {  // error has occured
     int errorCode = sensor.getErrorCode();
     switch (errorCode) {
-      case 1: Serial.println("ERR: Sensor is not online"); break;
+      case 1: Serial.println("ERR: Sensor is offline"); break;
       case 2: Serial.println("ERR: CRC validation failed."); break;
     }    
   }
