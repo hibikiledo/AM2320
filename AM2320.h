@@ -42,15 +42,15 @@ class AM2320 {
 
         bool measure();
 
-        int getTemperature();
-        int getHumidity();
+        float getTemperature();
+        float getHumidity();
 
         int getErrorCode();
         
     private:
         byte _buf[ MAX_BYTES_READ ];
-        int _temperature;
-        int _humidity;
+        float _temperature;
+        float _humidity;
         int _errorCode;        
         void _wake();
         bool _read_registers(int startAddress, int numByte);

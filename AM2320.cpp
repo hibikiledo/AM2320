@@ -33,11 +33,11 @@ void AM2320::begin(int sda, int scl) {
 }
 #endif
 
-int AM2320::getTemperature() {
+float AM2320::getTemperature() {
     return _temperature;
 }
 
-int AM2320::getHumidity() {
+float AM2320::getHumidity() {
     return _humidity;
 }
 
@@ -54,14 +54,14 @@ bool AM2320::measure() {
 
     if (receivedCrc == crc16(_buf, 6)) {
         int humudity = ((_buf[2] << 8) | _buf[3]);
-        _humidity =  humudity / 10;
+        _humidity =  humudity / 10.0;
 
         int temperature = ((_buf[4] & 0x7F) << 8) | _buf[5];
         if ((_buf[2] & 0x80) >> 8 == 1) {       // negative temperature
-            _temperature = (temperature / 10) * -1;    // devide data by 10 according to the datasheet
+            _temperature = (temperature / 10.0) * -1;    // devide data by 10 according to the datasheet
         }
         else {                                  // positive temperature
-            _temperature = temperature / 10;           // devide data by 10 according to the datasheet
+            _temperature = temperature / 10.0;           // devide data by 10 according to the datasheet
         }
 
         return true;
