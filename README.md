@@ -115,7 +115,7 @@ This is normal behavior of AM2320 to prevent measurement errors from self-heatin
 
 By checking the returned value, you can decide what to do.
 
-See [**Example**](#example)
+See [**Example**](#example-1)
 
 ---
 
@@ -134,7 +134,7 @@ None
 Floating point number representing the temperature in degree celcius.
 
 ### Usage Example
-See [**Example**](#example)
+See [**Example**](#example-1)
 
 ---
 
@@ -153,7 +153,7 @@ None
 Floating point number representing the humudity in % RH (Relative Humidity).
 
 ### Usage Example
-See [**Example**](#example)
+See [**Example**](#example-1)
 
 ---
 
@@ -174,7 +174,7 @@ None
 Integer representing an error code. [More info](#error-codes)
 
 ### Usage Example
-See [**Example**](#example)
+See [**Example**](#example-1)
 
 
 
@@ -241,10 +241,4 @@ void loop() {
 }
 ```
 # Contributions
-Open an issue if something doesn't work right. Submit pull request if you want to improve someting.
-
-# The Story
-I wrote blog posts about the process of writing this library. You can find it here.
-
-[Part 1](https://hibikiledo.xyz/2016/11/04/writing-am2320-arduino-library-1/)
-Part 2 .. working on it
+Open an issue if something doesn't work right. Submit pull request if you want to improve something.
