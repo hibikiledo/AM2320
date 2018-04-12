@@ -33,12 +33,7 @@ class AM2320 {
 
         // initialize AM2320
         void begin();
-
-        // initialize AM2320 for ESP8266 (ESP-01) which requires manual
-        // specification of sda and scl pins
-        #ifdef ESP8266
         void begin(int sda, int scl);
-        #endif
 
         bool measure();
 

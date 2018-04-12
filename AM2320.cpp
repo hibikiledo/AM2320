@@ -27,11 +27,9 @@ void  AM2320::begin() {
     Wire.begin();
 }
 
-#ifdef ESP8266
 void AM2320::begin(int sda, int scl) {
     Wire.begin(sda, scl);
 }
-#endif
 
 float AM2320::getTemperature() {
     return _temperature;
