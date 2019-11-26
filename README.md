@@ -204,14 +204,6 @@ AM2320 sensor;
 
 void setup() {
   // enable serial communication
-// Include library into the sketch
-#include <AM2320.h>
-
-// Create an instance of sensor
-AM2320 sensor;
-
-void setup() {
-  // enable serial communication
   Serial.begin(115200);
   // call sensor.begin() to initialize the library
   sensor.begin();
