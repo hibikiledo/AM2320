@@ -31,9 +31,11 @@ class AM2320 {
     public:
         AM2320();
 
-        // initialize AM2320
         void begin();
+        
+        #if defined(ESP8266)
         void begin(int sda, int scl);
+        #endif
 
         bool measure();
 
