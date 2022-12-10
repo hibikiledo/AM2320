@@ -57,7 +57,7 @@ bool AM2320::measure() {
         _humidity =  humudity / 10.0;
 
         int temperature = ((_buf[4] & 0x7F) << 8) | _buf[5];
-        if ((_buf[2] & 0x80) >> 8 == 1) {       // negative temperature
+        if ((_buf[4] & 0x80) >> 7 == 1) {       // negative temperature
             _temperature = (temperature / 10.0) * -1;    // devide data by 10 according to the datasheet
         }
         else {                                  // positive temperature
@@ -90,7 +90,7 @@ bool AM2320::_read_registers(int startAddress, int numByte) {
         return false;                           // return sensor not ready code
     }
     delayMicroseconds(1500);                    // as specified in datasheet
-    Wire.requestFrom(AM2320_ADDR, numByte + 4); // request bytes from sensor
+    Wire.requestFrom(AM2320_ADDR, numByte + 4); // request bytes from sensor +4 if for metadata from sensor
                                                 // see function code description in datasheet    
     for ( int i = 0; i < numByte + 4; i++) {    // read
         _buf[i] = Wire.read();
